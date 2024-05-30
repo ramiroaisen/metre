@@ -1,6 +1,6 @@
 [package]
 name = "metre"
-version = "0.2.0"
+version = "0.2.1"
 edition = "2021"
 description = "Metre, the configuration loader for Rust"
 repository = "https://github.com/ramiroaisen/metre"
@@ -25,8 +25,8 @@ full = [
   "yaml",
   "json",
   "jsonc",
-  "url_blocking",
-  "url_async"
+  "url-blocking",
+  "url-async"
 ] 
 env = []
 derive = [ "dep:metre-macros" ]
@@ -34,10 +34,9 @@ toml = [ "dep:toml" ]
 yaml = [ "dep:serde_yaml" ]
 json = [ "dep:serde_json" ]
 jsonc = [ "dep:json_comments", "dep:serde_json" ]
-url_blocking = ["dep:reqwest", "reqwest/blocking"]
-url_async = ["dep:reqwest"]
+url-blocking = ["dep:reqwest", "reqwest/blocking"]
+url-async = ["dep:reqwest"]
 reqwest-rustls-tls = ["reqwest?/rustls-tls"]
-
 
 [dependencies]
 metre-macros = { version = "0.2.0", path = "../metre-macros", optional = true }
@@ -49,3 +48,7 @@ serde_json = { version = "1.0.117", optional = true }
 serde_yaml = { version = "0.9.34", optional = true }
 thiserror = "1.0.61"
 toml = { version = "0.8.13", optional = true }
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]

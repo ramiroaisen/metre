@@ -1,0 +1,1 @@
+rustup run nightly cargo -Z unstable-options -C ./metre rustdoc --all-features -- --cfg docsrs

@@ -4,9 +4,9 @@ use std::str::FromStr;
 
 /// Utility function to use with `#[config(parse_env)]` attribute
 ///
-/// the function will return a [Vec&lt;T&gt;](std::vec::Vec<T>) from a comma separated env string
+/// the function will return a [`Vec<T>`] from a comma separated env string
 ///
-/// the type `T` must implement [FromStr](std::str::FromStr)
+/// the type `T` must implement [`FromStr`]
 ///
 /// currently Rust is not smart enough to infer the type `T` from the context, so you have to specify it explicitly
 ///

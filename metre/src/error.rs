@@ -12,7 +12,8 @@ use crate::LoadLocation;
 pub enum Error {
   /// A network error loading a configuration from a url
   #[error("Network error loading config from {}", url.yellow())]
-  #[cfg(any(feature = "url_blocking", feature = "url_async"))]
+  #[cfg_attr(docsrs, doc(cfg(any(feature = "url-blocking", feature = "url-async"))))]
+  #[cfg(any(feature = "url-blocking", feature = "url-async"))]
   Network {
     url: String,
     #[source]
@@ -29,6 +30,7 @@ pub enum Error {
 
   /// A JSON or JSONC error when deserialzing a partial configuration
   #[cfg(any(feature = "json", feature = "jsonc"))]
+  #[cfg_attr(docsrs, doc(cfg(any(feature = "json", feature = "jsonc"))))]
   #[error("JSON error loading config from {}", location)]
   Json {
     #[source]
@@ -38,6 +40,7 @@ pub enum Error {
 
   /// A TOML error when deserialzing a partial configuration
   #[cfg(feature = "toml")]
+  #[cfg_attr(docsrs, doc(cfg(feature = "toml")))]
   #[error("TOML error loading config from {}", location)]
   Toml {
     #[source]
@@ -48,6 +51,7 @@ pub enum Error {
   /// A YAML error when deserialzing a partial configuration
   #[error("YAML error loading config from {}", location)]
   #[cfg(feature = "yaml")]
+  #[cfg_attr(docsrs, doc(cfg(feature = "yaml")))]
   Yaml {
     #[source]
     source: Arc<serde_yaml::Error>,
@@ -56,6 +60,7 @@ pub enum Error {
 
   /// An error loading a partial configuration from an environment variable
   #[cfg(feature = "env")]
+  #[cfg_attr(docsrs, doc(cfg(feature = "env")))]
   #[error(transparent)]
   FromEnv(#[from] FromEnvError),
 
@@ -80,6 +85,7 @@ pub struct MergeError {
 
 /// Error parsing a value from an environment variable
 #[cfg(feature = "env")]
+#[cfg_attr(docsrs, doc(cfg(feature = "env")))]
 #[derive(Debug, Clone, thiserror::Error)]
 #[error("error parsing var {} from env for field: {}: {}", key.yellow(), field.yellow(), message)]
 pub struct FromEnvError {
