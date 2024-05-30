@@ -103,6 +103,7 @@ fn from_env_with_prefix() {
   assert_eq!(config.optional, Some("optional".into()));
 }
 
+#[cfg(feature = "json")]
 #[test]
 fn from_json_code() {
   #[derive(Config, Debug, Eq, PartialEq)]
@@ -126,6 +127,7 @@ fn from_json_code() {
   assert_eq!(config.port, 3000);
 }
 
+#[cfg(feature = "jsonc")]
 #[test]
 fn should_load_jsonc_code() {
   #[derive(Config, Debug, Eq, PartialEq)]
@@ -150,6 +152,7 @@ fn should_load_jsonc_code() {
   assert_eq!(config.port, 3000);
 }
 
+#[cfg(feature = "toml")]
 #[test]
 fn should_load_toml_code() {
   #[derive(Config, Debug, Eq, PartialEq)]
@@ -172,6 +175,7 @@ fn should_load_toml_code() {
   assert_eq!(config.port, 3000);
 }
 
+#[cfg(feature = "yaml")]
 #[test]
 fn should_load_yaml_code() {
   #[derive(Config, Debug, Eq, PartialEq)]
@@ -193,6 +197,7 @@ fn should_load_yaml_code() {
   assert_eq!(config.port, 3000);
 }
 
+#[cfg(feature = "env")]
 #[test]
 fn should_load_env() {
   #[derive(Config, Debug, Eq, PartialEq)]
@@ -210,6 +215,7 @@ fn should_load_env() {
   assert_eq!(config.port, 3000);
 }
 
+#[cfg(feature = "yaml")]
 #[test]
 fn should_accumulate_partial_states() {
   #[derive(Config, Debug, Eq, PartialEq)]
@@ -241,6 +247,7 @@ fn should_accumulate_partial_states() {
   assert_eq!(partial_state.port, Some(3001));
 }
 
+#[cfg(feature = "yaml")]
 #[test]
 fn should_merge_partal_states() {
   #[derive(Config, Debug, Eq, PartialEq)]
@@ -279,6 +286,7 @@ fn should_merge_partal_states() {
   assert_eq!(config.addr, "addr");
 }
 
+#[cfg(feature = "yaml")]
 #[test]
 fn should_error_on_missing_properties() {
   #[derive(Config, Debug, Eq, PartialEq)]
@@ -301,6 +309,7 @@ fn should_error_on_missing_properties() {
   assert!(err.to_string().contains("missing"));
 }
 
+#[cfg(feature = "yaml")]
 #[test]
 fn should_list_missing_properties_and_error() {
   #[derive(Config, Debug, Eq, PartialEq)]
@@ -325,6 +334,7 @@ fn should_list_missing_properties_and_error() {
   assert!(loader.finish().is_err());
 }
 
+#[cfg(feature = "yaml")]
 #[test]
 fn should_not_list_missing_properties_that_are_optional() {
   #[derive(Config, Debug, Eq, PartialEq)]
@@ -348,6 +358,7 @@ fn should_not_list_missing_properties_that_are_optional() {
   assert!(loader.finish().is_ok());
 }
 
+#[cfg(feature = "env")]
 #[test]
 fn should_skip_env() {
   #[derive(Config, Debug, Eq, PartialEq)]
@@ -367,6 +378,7 @@ fn should_skip_env() {
   loader.finish().unwrap_err();
 }
 
+#[cfg(feature = "env")]
 #[test]
 fn should_skip_env_for_nested() {
   #[derive(Config, Debug, Eq, PartialEq)]
@@ -392,6 +404,7 @@ fn should_skip_env_for_nested() {
   loader.finish().unwrap_err();
 }
 
+#[cfg(feature = "env")]
 #[test]
 fn should_skip_env_for_nested_with_prefix() {
   #[derive(Config, Debug, Eq, PartialEq)]
@@ -419,6 +432,8 @@ fn should_skip_env_for_nested_with_prefix() {
   loader.finish().unwrap_err();
 }
 
+
+#[cfg(all(feature = "yaml", feature = "env"))]
 #[test]
 fn should_override_with_env() {
   #[derive(Config, Debug, Eq, PartialEq)]
@@ -444,6 +459,7 @@ fn should_override_with_env() {
   assert_eq!(config.port, 3000);
 }
 
+#[cfg(all(feature = "yaml", feature = "env"))]
 #[test]
 fn should_override_with_env_with_prefix() {
   #[derive(Config, Debug, Eq, PartialEq)]
@@ -472,6 +488,7 @@ fn should_override_with_env_with_prefix() {
   assert_eq!(config.port, 3000);
 }
 
+#[cfg(all(feature = "yaml", feature = "env"))]
 #[test]
 fn should_override_with_env_with_prefix_and_rename() {
   #[derive(Config, Debug, Eq, PartialEq)]
@@ -501,6 +518,7 @@ fn should_override_with_env_with_prefix_and_rename() {
   assert_eq!(config.port_renamed, 3000);
 }
 
+#[cfg(all(feature = "yaml", feature = "env"))]
 #[test]
 fn should_override_with_env_with_prefix_and_rename_and_nested() {
   #[derive(Config, Debug, Eq, PartialEq)]
@@ -537,6 +555,7 @@ fn should_override_with_env_with_prefix_and_rename_and_nested() {
   assert_eq!(config.nested.port_renamed, 3000);
 }
 
+#[cfg(feature = "json")]
 #[test]
 fn should_error_on_invalid_type() {
   #[derive(Config, Debug, Eq, PartialEq)]
@@ -569,6 +588,7 @@ fn should_not_list_as_missing_optional_types() {
   assert_eq!(missing, Vec::<String>::new());
 }
 
+#[cfg(feature = "yaml")]
 #[test]
 fn should_work_for_nested_optional_types() {
   #[derive(Config, Debug, Eq, PartialEq)]
@@ -662,6 +682,7 @@ fn should_respect_defaults_for_nested_configs() {
   );
 }
 
+#[cfg(feature = "toml")]
 #[test]
 fn should_work_with_custom_merge_functions() {
   #[derive(Config, Debug, Eq, PartialEq)]
@@ -692,6 +713,7 @@ fn should_work_with_custom_merge_functions() {
   assert_eq!(config.list, ["item1", "item2"]);
 }
 
+#[cfg(feature = "yaml")]
 #[test]
 fn should_error_on_unkown_extra_properties() {
   #[derive(Config, Debug, Eq, PartialEq)]
@@ -711,6 +733,7 @@ fn should_error_on_unkown_extra_properties() {
     .unwrap_err();
 }
 
+#[cfg(feature = "yaml")]
 #[test]
 fn should_not_error_on_unkown_extra_properties_with_allow_unkown_fields_attr() {
   #[derive(Config, Debug, Eq, PartialEq)]
@@ -734,6 +757,7 @@ fn should_not_error_on_unkown_extra_properties_with_allow_unkown_fields_attr() {
   assert_eq!(config.port, 3000);
 }
 
+#[cfg(all(feature = "yaml", feature = "json"))]
 #[test]
 fn partial_config_should_not_serialize_missing_properties() {
   #[derive(Config, Debug, Eq, PartialEq)]
@@ -757,6 +781,7 @@ fn partial_config_should_not_serialize_missing_properties() {
   assert_eq!(serialized, "{\"port\":3000}");
 }
 
+#[cfg(all(feature = "yaml", feature = "json"))]
 #[test]
 fn partial_config_should_not_serialize_empty_nested_configs() {
   #[derive(Config, Debug, Eq, PartialEq)]
@@ -786,6 +811,7 @@ fn partial_config_should_not_serialize_empty_nested_configs() {
   assert_eq!(serialized, "{\"port\":3000}");
 }
 
+#[cfg(feature = "json")]
 #[test]
 fn should_load_json_file() {
   #[derive(Config, Debug, Eq, PartialEq)]
@@ -806,6 +832,7 @@ fn should_load_json_file() {
   assert_eq!(config.port, 3000);
 }
 
+#[cfg(feature = "jsonc")]
 #[test]
 fn should_load_jsonc_file() {
   #[derive(Config, Debug, Eq, PartialEq)]
@@ -837,6 +864,7 @@ fn should_load_jsonc_file() {
   assert_eq!(config.addr, "addr");
 }
 
+#[cfg(feature = "toml")]
 #[test]
 fn should_load_toml_file() {
   #[derive(Config, Debug, Eq, PartialEq)]
@@ -865,6 +893,7 @@ fn should_load_toml_file() {
   assert_eq!(config.addr, "addr");
 }
 
+#[cfg(feature = "yaml")]
 #[test]
 fn should_load_yaml_file() {
   #[derive(Config, Debug, Eq, PartialEq)]

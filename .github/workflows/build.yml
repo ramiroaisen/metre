@@ -55,4 +55,4 @@ jobs:
     #     key: build-cargo-target
 
     - name: Cargo Build
-      run: cargo build
+      run: cargo build --all-features

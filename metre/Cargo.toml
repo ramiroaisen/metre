@@ -11,14 +11,41 @@ keywords = ["configuration", "config", "loader", "env"]
 categories = ["config", "environment-variables"]
 authors = ["Ramiro Aisen <ramiroaisen@gmail.com>"]
 
+[features]
+default = [
+  "derive",
+  "env",
+  "toml",
+  "json",
+]
+full = [
+  "derive",
+  "env",
+  "toml",
+  "yaml",
+  "json",
+  "jsonc",
+  "url_blocking",
+  "url_async"
+] 
+env = []
+derive = [ "dep:metre-macros" ]
+toml = [ "dep:toml" ]
+yaml = [ "dep:serde_yaml" ]
+json = [ "dep:serde_json" ]
+jsonc = [ "dep:json_comments", "dep:serde_json" ]
+url_blocking = ["dep:reqwest", "reqwest/blocking"]
+url_async = ["dep:reqwest"]
+reqwest-rustls-tls = ["reqwest?/rustls-tls"]
+
 
 [dependencies]
-metre-macros = { version = "0.1.1", path = "../metre-macros" }
-json_comments = "0.2.2"
-owo-colors = "4.0.0"
-reqwest = { version = "0.12.4", features = ["blocking", "rustls-tls"] }
+metre-macros = { version = "0.2.0", path = "../metre-macros", optional = true }
+json_comments = { version = "0.2.2", optional = true }
+owo-colors = { version = "4.0.0" }
+reqwest = { version = "0.12.4", features = ["blocking", "rustls-tls"], optional = true }
 serde = { version = "1.0.203", features = ["derive"] }
-serde_json = "1.0.117"
-serde_yaml = "0.9.34"
+serde_json = { version = "1.0.117", optional = true }
+serde_yaml = { version = "0.9.34", optional = true }
 thiserror = "1.0.61"
-toml = "0.8.13"
+toml = { version = "0.8.13", optional = true }
