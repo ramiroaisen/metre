@@ -7,14 +7,13 @@
 
 ## What is it?
 
-**metre** is a configuration loader for Rust that allows you to load configurations from a variety of formats such as **toml**, **json**, **jsonc** and **yaml** 
-yaml,
+**metre** is a configuration loader for Rust that allows you to load configurations from a variety of formats such as **toml**, **json**, **jsonc** and **yaml**
 
-It also supports a variety of sources such as **env variables**, **files**, and **urls**.   
+It also supports a variety of sources such as **program defaults**, **env variables**, **files**, and **urls**.   
 
-## Why?
+## Focus
 
-**metre** focus is to provide a declarative and type-safe way to load configurations in Rust. 
+**metre** focus is to provide a **declarative** and **type-safe** way to load configurations in Rust.
 
 ## How?
 
