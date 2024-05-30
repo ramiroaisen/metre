@@ -1,4 +1,5 @@
-# Configuration Loader for Rust, aka #[derive(Config)]
+# Metre: The rust configuration loader
+# AKA:  `#[derive(Config)]`
 
 [![build](https://github.com/ramiroaisen/metre/actions/workflows/build.yml/badge.svg)](https://github.com/ramiroaisen/metre/actions/workflows/build.yml)
 [![integration-tests](https://github.com/ramiroaisen/metre/actions/workflows/integration-tests.yml/badge.svg)](https://github.com/MasterworksIO/metre/actions/workflows/integration-tests.yml)
