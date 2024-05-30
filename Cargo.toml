@@ -1,0 +1,6 @@
+[workspace]
+members = [
+  "metre",
+  "metre-macros",
+]
+

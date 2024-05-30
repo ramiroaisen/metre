@@ -1,0 +1,57 @@
+name: build
+
+on: 
+  push:
+    paths:
+      - "metre/**"
+      - "metre-macros/**"
+      - "Cargo.toml"
+      - "Cargo.lock"
+    branches: [ master, dev ]
+  
+  pull_request:
+    paths:
+      - "metre/**"
+      - "metre-macros/**"
+      - "Cargo.toml"
+      - "Cargo.lock"
+    branches: [ master, dev ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+
+  # skip_check:
+  #   runs-on: ubuntu-latest
+  #   outputs:
+  #     should_skip: ${{ steps.skip_check.outputs.should_skip }}
+  #   steps:
+  #     - id: skip_check
+  #       uses: fkirc/skip-duplicate-actions@v5
+
+  build:
+    # needs: skip_check
+    # if: needs.skip_check.outputs.should_skip != 'true'
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    # - uses: actions/cache@v3
+    #   with:
+    #     path: ./target
+    #     key: ${{ runner.os }}-cargo-build-release-${{ hashFiles('**/Cargo.lock', '**/Cargo.toml', './rs') }}
+    #     restore-keys: |
+    #       ${{ runner.os }}-cargo-build-release-
+    
+    # - name: Local cargo cache
+    #   id: build-cargo-cache
+    #   uses: MasterworksIO/action-local-cache@1.0.0
+    #   with:
+    #     path: ./target/
+    #     key: build-cargo-target
+
+    - name: Cargo Build
+      run: cargo build
