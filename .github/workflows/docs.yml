@@ -35,5 +35,5 @@ jobs:
         toolchain: nightly
     - name: Cargo Docs
       working-directory: ./metre
-      run: rustup run nighlty cargo rustdoc --all-features -- --cfg docsrs
+      run: rustup run nightly cargo rustdoc --all-features -- --cfg docsrs
 
