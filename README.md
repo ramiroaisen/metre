@@ -1,4 +1,4 @@
-# Metre: The rust configuration loader
+# **metre**: The rust configuration loader
 ### AKA:  `#[derive(Config)]`
 
 [![build](https://github.com/ramiroaisen/metre/actions/workflows/build.yml/badge.svg)](https://github.com/ramiroaisen/metre/actions/workflows/build.yml)
