@@ -5,6 +5,7 @@ edition = "2021"
 description = "Metre, the configuration loader for Rust"
 repository = "https://github.com/ramiroaisen/metre"
 documentation = "https://docs.rs/metre"
+license = "Apache-2.0"
 readme = "../README.md"
 keywords = ["configuration", "config", "loader", "toml", "json", "yaml", "env", "url"]
 categories = ["config", "encoding", "parsing"]
