@@ -2,6 +2,14 @@
 name = "metre"
 version = "0.1.0"
 edition = "2021"
+description = "Metre, the configuration loader for Rust"
+repository = "https://github.com/ramiroaisen/metre"
+documentation = "https://docs.rs/metre"
+readme = "../README.md"
+keywords = ["configuration", "config", "loader", "toml", "json", "yaml", "env", "url"]
+categories = ["config", "encoding", "parsing"]
+authors = ["Ramiro Aisen <ramiroaisen@gmail.com>"]
+
 
 [dependencies]
 metre-macros = { version = "0.1.0", path = "../metre-macros" }
@@ -13,12 +21,3 @@ serde_json = "1.0.117"
 serde_yaml = "0.9.34"
 thiserror = "1.0.61"
 toml = "0.8.13"
-# metre-macros = { version = "0.1.0", path = "../metre-macros" }
-# owo-colors = { version = "3.5.0", path = "../owo-colors" }
-# json_comments = "0.2.1"
-# serde = { workspace = true }
-# serde_json = { workspace = true }
-# toml = "0.7.6"
-# serde_yaml = "0.9.25"
-# thiserror = { workspace = true }
-# reqwest = { version = "0.11", default-features = false, features = ["blocking", "rustls-tls"] }
