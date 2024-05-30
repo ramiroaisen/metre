@@ -33,5 +33,7 @@ jobs:
         # docs.rs run docs with a nighlty toolchain
         # the crate uses nighly features only for documentation
         toolchain: nightly
-    - run: cargo -Z unstable-options -C ./metre rustdoc --all-features -- --cfg docsrs
+    - name: Cargo Docs
+      working-directory: ./metre
+      run: cargo rustdoc --all-features -- --cfg docsrs
 
