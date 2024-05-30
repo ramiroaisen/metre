@@ -1,0 +1,37 @@
+name: docs
+
+on: 
+  workflow_dispatch:
+  push:
+    paths:
+      - "metre/**"
+      - "metre-macros/**"
+      - "Cargo.toml"
+      - "Cargo.lock"
+    branches: [ main, dev ]
+  
+  pull_request:
+    paths:
+      - "metre/**"
+      - "metre-macros/**"
+      - "Cargo.toml"
+      - "Cargo.lock"
+    branches: [ main, dev ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions-rs/toolchain@v1
+      with:
+        # docs.rs run docs with a nighlty toolchain
+        # the crate uses nighly features only for documentation
+        toolchain: nightly
+    - run: cargo -Z unstable-options -C ./metre rustdoc --all-features -- --cfg docsrs
+
