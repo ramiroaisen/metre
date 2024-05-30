@@ -1,6 +1,6 @@
 [package]
 name = "metre"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 description = "Metre, the configuration loader for Rust"
 repository = "https://github.com/ramiroaisen/metre"
@@ -8,7 +8,7 @@ documentation = "https://docs.rs/metre"
 license = "Apache-2.0"
 readme = "../README.md"
 keywords = ["configuration", "config", "loader", "env"] 
-categories = ["config", "encoding", "parsing"]
+categories = ["config", "environment-variables"]
 authors = ["Ramiro Aisen <ramiroaisen@gmail.com>"]
 
 

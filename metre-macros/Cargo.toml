@@ -1,6 +1,6 @@
 [package]
 name = "metre-macros"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 license = "Apache-2.0"
 description = "Macros for the metre crate"
@@ -8,7 +8,7 @@ repository = "https://github.com/ramiroaisen/metre"
 documentation = "https://docs.rs/metre"
 readme = "../README.md"
 keywords = ["configuration", "config", "loader", "env"]
-categories = ["config", "encoding", "parsing"]
+categories = ["config", "environment-variables"]
 authors = ["Ramiro Aisen <ramiroaisen@gmail.com>"]
 
 
