@@ -69,35 +69,44 @@
 //!   loader.defaults()?;
 //!   
 //!   // add deep-partial values from config file
+//!   #[cfg(feature = "json")]
 //!   loader.file("./config.json", Format::Json)?;
 //!
 //!   // the same as above but will do nothing if the file doesn't exist
 //!   // Jsonc format is json with comments
+//!   #[cfg(feature = "jsonc")]
 //!   loader.file_optional("./config.jsonc", Format::Jsonc)?;
 //!   
 //!   // from memory
 //!   loader.code("port=3000", Format::Toml)?;
 //!
 //!   // form a url
+//!   #[cfg(feature = "url")]
 //!   loader.url("https://example.com/config.yaml", Format::Yaml)?;
 //!
 //!   // from a url but async
+//!   #[cfg(feature = "url_async")]
 //!   async {
 //!     loader.url_async("https://example.com/config.json", Format::Json).await.expect("error loading config from url");
 //!   };
 //!
 //!   // from env variables
+//!   #[cfg(feature = "env")]
 //!   loader.env()?;
 //!
 //!   // from env variables with a prefix
+//!   #[cfg(feature = "env")]
 //!   loader.env_with_prefix("MY_APP_")?;
 //!
 //!   // from env variables with a custom provider
 //!   // env provider must implement the metre::EnvProvider trait
 //!   // that is already implemented for several types of Maps
-//!   let mut env_provider = std::collections::HashMap::from([( "MY_APP_PORT", "3000" )]);
-//!   loader.env_with_provider_and_prefix(&env_provider, "MY_APP_")?;
-//!
+//!   
+//!   #[cfg(feature = "env")]
+//!   {
+//!     let mut env_provider = std::collections::HashMap::from([( "MY_APP_PORT", "3000" )]);
+//!     loader.env_with_provider_and_prefix(&env_provider, "MY_APP_")?;
+//!   }
 //!   // from a pre generated partial configuration
 //!   // PartialMyConfig type is auto generated from the `#[derive(Config)]` macro
 //!   // and equals to <MyConfig as Config>::Partial: PartialConfig
@@ -142,12 +151,15 @@
 
 use owo_colors::*;
 use serde::de::DeserializeOwned;
-use std::collections::{BTreeMap, HashMap};
+#[allow(unused)]
 use std::convert::Infallible;
-use std::env::VarError;
 use std::fmt::Display;
 use std::path::Path;
 use std::sync::Arc;
+#[cfg(feature = "env")]
+use std::collections::{BTreeMap, HashMap};
+#[cfg(feature = "env")]
+use std::env::VarError;
 
 pub mod error;
 pub mod merge;
@@ -191,9 +203,13 @@ pub use error::Error;
 /// | flatten | If applied, this field will be merged with the previous stage instead of replacing it | false | `#[config(flatten)]` | This attribute will apply a `#[serde(flatten)]` to the PartialConfig struct, it will also modify the calculated env key prefix for nested fields |
 /// | nested | If applied, this field will be treated as a nested configuration | false | `#[config(nested)]` | This attrbute indicates that this field is a nested partial configuration, the nested field must also implement the [`Config`] trait |
 /// | rename | The rename the field in the partial configuration | - | `#[config(rename = "other_name")]` | This will apply a `#[serde(rename)]` attribute to the Partial struct, it will also modify the auto calculated env key for the field |
+#[cfg(feature = "derive")] 
 pub use metre_macros::Config;
 
-use error::{FromEnvError, FromPartialError, MergeError};
+use error::{FromPartialError, MergeError};
+
+#[cfg(feature = "env")] 
+use error::FromEnvError; 
 
 /// The Config trait that is implemented from the [`Config`](macro@Config) derive macro
 ///
@@ -236,12 +252,14 @@ pub trait PartialConfig: DeserializeOwned + Default {
   /// Create a partial configuration from environment variables
   /// [`EnvProvider`] is specially usefull for unit tests and is already implemented for several
   /// types of [HashMap]'s and [BTreeMap]'s from the standard library
+  #[cfg(feature = "env")]
   fn from_env_with_provider_and_optional_prefix<E: EnvProvider>(
     env: &E,
     prefix: Option<&str>,
   ) -> Result<Self, FromEnvError>;
 
   /// Forwards to [`Self::from_env_with_provider_and_optional_prefix`]
+  #[cfg(feature = "env")]
   fn from_env_with_provider_and_prefix<E: EnvProvider, P: AsRef<str>>(
     env: &E,
     prefix: P,
@@ -250,16 +268,19 @@ pub trait PartialConfig: DeserializeOwned + Default {
   }
 
   /// Forwards to [`Self::from_env_with_provider_and_optional_prefix`]
+  #[cfg(feature = "env")]
   fn from_env_with_provider<E: EnvProvider>(env: &E) -> Result<Self, FromEnvError> {
     Self::from_env_with_provider_and_optional_prefix(env, None)
   }
 
   /// Forwards to [`Self::from_env_with_provider_and_optional_prefix`] with the standard library's [`std::env::var`] as the [`EnvProvider`]
+  #[cfg(feature = "env")]
   fn from_env_with_prefix<P: AsRef<str>>(prefix: P) -> Result<Self, FromEnvError> {
     Self::from_env_with_provider_and_optional_prefix(&StdEnv, Some(prefix.as_ref()))
   }
 
   /// Forwards to [`Self::from_env_with_provider_and_optional_prefix`] with the standard library's [`std::env::var`] as the [`EnvProvider`]
+  #[cfg(feature = "env")]
   fn from_env() -> Result<Self, FromEnvError> {
     Self::from_env_with_provider_and_optional_prefix(&StdEnv, None)
   }
@@ -323,6 +344,7 @@ impl<T: PartialConfig> PartialConfig for Option<T> {
     }
   }
 
+  #[cfg(feature = "env")]
   fn from_env_with_provider_and_optional_prefix<E: EnvProvider>(
     env: &E,
     prefix: Option<&str>,
@@ -352,6 +374,7 @@ pub trait EnvProvider {
   fn get(&self, key: &str) -> Result<Option<String>, Self::Error>;
 }
 
+#[cfg(feature = "env")]
 macro_rules! impl_env_provider_for_map {
   ($ty:ty) => {
     impl EnvProvider for $ty {
@@ -363,19 +386,29 @@ macro_rules! impl_env_provider_for_map {
   };
 }
 
+#[cfg(feature = "env")]
 impl_env_provider_for_map!(HashMap<String, String>);
+#[cfg(feature = "env")]
 impl_env_provider_for_map!(HashMap<&str, String>);
+#[cfg(feature = "env")]
 impl_env_provider_for_map!(HashMap<String, &str>);
+#[cfg(feature = "env")]
 impl_env_provider_for_map!(HashMap<&str, &str>);
+#[cfg(feature = "env")]
 impl_env_provider_for_map!(BTreeMap<String, String>);
+#[cfg(feature = "env")]
 impl_env_provider_for_map!(BTreeMap<&str, String>);
+#[cfg(feature = "env")]
 impl_env_provider_for_map!(BTreeMap<String, &str>);
+#[cfg(feature = "env")]
 impl_env_provider_for_map!(BTreeMap<&str, &str>);
 
 /// An implementation of [`EnvProvider`] that reads from the standard library's [`std::env::var`]
 #[derive(Debug, Clone, Copy)]
+#[cfg(feature = "env")]
 pub struct StdEnv;
 
+#[cfg(feature = "env")]
 impl EnvProvider for StdEnv {
   type Error = VarError;
   fn get(&self, key: &str) -> Result<Option<String>, Self::Error> {
@@ -396,6 +429,7 @@ impl EnvProvider for StdEnv {
 pub enum LoadLocation {
   Memory,
   File(String),
+  #[cfg(any(feature = "url_blocking", feature = "url_async"))]
   Url(String),
 }
 
@@ -405,6 +439,7 @@ impl Display for LoadLocation {
     match self {
       Memory => write!(f, "{}", "memory".yellow()),
       File(location) => write!(f, "file: {}", location.yellow()),
+      #[cfg(any(feature = "url_blocking", feature = "url_async"))]
       Url(location) => write!(f, "url: {}", location.yellow()),
     }
   }
@@ -413,9 +448,13 @@ impl Display for LoadLocation {
 /// List of known configuration formats
 #[derive(Debug, Clone, Copy, Eq, PartialEq, Hash)]
 pub enum Format {
+  #[cfg(feature = "json")]
   Json,
+  #[cfg(feature = "jsonc")]
   Jsonc,
+  #[cfg(feature = "toml")]
   Toml,
+  #[cfg(feature = "yaml")]
   Yaml,
 }
 
@@ -460,6 +499,7 @@ impl<T: Config> ConfigLoader<T> {
   }
 
   /// Add a partial configuration from enviroment varialbes
+  #[cfg(feature = "env")]
   #[inline(always)]
   #[allow(clippy::result_large_err)]
   pub fn env(&mut self) -> Result<&mut Self, Error> {
@@ -467,6 +507,7 @@ impl<T: Config> ConfigLoader<T> {
   }
 
   /// Add a partial configuration from enviroment variables with a prefix
+  #[cfg(feature = "env")]
   #[inline(always)]
   #[allow(clippy::result_large_err)]
   pub fn env_with_prefix(&mut self, prefix: &str) -> Result<&mut Self, Error> {
@@ -478,6 +519,7 @@ impl<T: Config> ConfigLoader<T> {
   /// The provider must implement the [`EnvProvider`] trait
   ///
   /// The [`EnvProvider`] trait is already implemented for several kinds of Maps from the standard library
+  #[cfg(feature = "env")]
   #[inline(always)]
   #[allow(clippy::result_large_err)]
   pub fn env_with_provider<E: EnvProvider>(&mut self, env: &E) -> Result<&mut Self, Error> {
@@ -485,6 +527,7 @@ impl<T: Config> ConfigLoader<T> {
   }
 
   /// See [`Self::env_with_provider`] and [`Self::env_with_prefix`]
+  #[cfg(feature = "env")]
   #[inline(always)]
   #[allow(clippy::result_large_err)]
   pub fn env_with_provider_and_prefix<E: EnvProvider>(
@@ -517,6 +560,7 @@ impl<T: Config> ConfigLoader<T> {
   }
 
   /// Add a partial configuration from a url
+  #[cfg(feature = "url_blocking")]
   #[allow(clippy::result_large_err)]
   pub fn url(&mut self, url: &str, format: Format) -> Result<&mut Self, Error> {
     let map_err = |e| Error::Network {
@@ -532,6 +576,7 @@ impl<T: Config> ConfigLoader<T> {
     self._code(&code, format, LoadLocation::Url(url.to_string()))
   }
 
+  #[cfg(feature = "url_async")]
   /// Add a partial configuration from a url, async version
   pub async fn url_async(&mut self, url: &str, format: Format) -> Result<&mut Self, Error> {
     let map_err = |e| Error::Network {
@@ -549,6 +594,7 @@ impl<T: Config> ConfigLoader<T> {
     self._code(&code, format, LoadLocation::Url(url.to_string()))
   }
 
+  #[cfg(feature = "env")]
   #[inline(always)]
   #[allow(clippy::result_large_err)]
   fn _env<E: EnvProvider>(&mut self, env: &E, prefix: Option<&str>) -> Result<&mut Self, Error> {
@@ -556,6 +602,7 @@ impl<T: Config> ConfigLoader<T> {
     self._add(partial)
   }
 
+  #[allow(unused)]
   #[allow(clippy::result_large_err)]
   fn _code(
     &mut self,
@@ -564,11 +611,13 @@ impl<T: Config> ConfigLoader<T> {
     location: LoadLocation,
   ) -> Result<&mut Self, Error> {
     let partial = match format {
+      #[cfg(feature = "json")]
       Format::Json => serde_json::from_str(code).map_err(|e| Error::Json {
         location,
         source: Arc::new(e),
       })?,
 
+      #[cfg(feature = "jsonc")]
       Format::Jsonc => {
         let reader = json_comments::StripComments::new(code.as_bytes());
         serde_json::from_reader(reader).map_err(|e| Error::Json {
@@ -577,11 +626,13 @@ impl<T: Config> ConfigLoader<T> {
         })?
       }
 
+      #[cfg(feature = "toml")]
       Format::Toml => toml::from_str(code).map_err(|e| Error::Toml {
         location,
         source: e,
       })?,
 
+      #[cfg(feature = "yaml")]
       Format::Yaml => serde_yaml::from_str(code).map_err(|e| Error::Yaml {
         location,
         source: Arc::new(e),
