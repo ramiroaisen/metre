@@ -7,10 +7,10 @@
 
 ## What is it?
 
-**metre** is a configuration loader for Rust that allows you to load configuration from a variety of formats such as **toml**, **json**, **jsonc** and **yaml** 
+**metre** is a configuration loader for Rust that allows you to load configurations from a variety of formats such as **toml**, **json**, **jsonc** and **yaml** 
 yaml,
 
-It also supports a variety of sources such as **environment variables**, **files**, and **urls**.   
+It also supports a variety of sources such as **env variables**, **files**, and **urls**.   
 
 ## Why?
 
