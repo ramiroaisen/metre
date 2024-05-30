@@ -2,8 +2,10 @@
 ### AKA:  `#[derive(Config)]`
 
 [![build](https://github.com/ramiroaisen/metre/actions/workflows/build.yml/badge.svg)](https://github.com/ramiroaisen/metre/actions/workflows/build.yml)
-[![integration-tests](https://github.com/ramiroaisen/metre/actions/workflows/integration-tests.yml/badge.svg)](https://github.com/ramiroaisen/metre/actions/workflows/integration-tests.yml)
 [![unit-tests](https://github.com/ramiroaisen/metre/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/ramiroaisen/metre/actions/workflows/unit-tests.yml)
+[![integration-tests](https://github.com/ramiroaisen/metre/actions/workflows/integration-tests.yml/badge.svg)](https://github.com/ramiroaisen/metre/actions/workflows/integration-tests.yml)
+[![docs](https://github.com/ramiroaisen/metre/actions/workflows/docs.yml/badge.svg)](https://github.com/ramiroaisen/metre/actions/workflows/docs.yml)
+
 
 ## What is it?
 
