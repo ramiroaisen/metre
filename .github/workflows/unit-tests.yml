@@ -57,4 +57,4 @@ jobs:
     #     key: unit-tests-cargo-target
 
     - name: Cargo Unit Tests
-      run: cargo test --bins --lib -- --nocapture
+      run: cargo test --bins --lib --all-features -- --nocapture
