@@ -4,4 +4,4 @@ members = [
   "metre-macros",
 ]
 
-# trigger workflows
+resolver = "2"

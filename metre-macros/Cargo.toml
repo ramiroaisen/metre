@@ -7,7 +7,7 @@ description = "Macros for the metre crate"
 repository = "https://github.com/ramiroaisen/metre"
 documentation = "https://docs.rs/metre"
 readme = "../README.md"
-keywords = ["configuration", "config", "loader", "toml", "json", "yaml", "env", "url"]
+keywords = ["configuration", "config", "loader", "env"]
 categories = ["config", "encoding", "parsing"]
 authors = ["Ramiro Aisen <ramiroaisen@gmail.com>"]
 
