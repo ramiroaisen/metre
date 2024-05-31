@@ -1,6 +1,6 @@
 [package]
 name = "metre"
-version = "0.2.1"
+version = "0.2.2"
 edition = "2021"
 description = "Metre, the configuration loader for Rust"
 repository = "https://github.com/ramiroaisen/metre"
@@ -39,7 +39,7 @@ url-async = ["dep:reqwest"]
 reqwest-rustls-tls = ["reqwest?/rustls-tls"]
 
 [dependencies]
-metre-macros = { version = "0.2.1", path = "../metre-macros", optional = true }
+metre-macros = { version = "0.2.2", path = "../metre-macros", optional = true }
 json_comments = { version = "0.2.2", optional = true }
 owo-colors = { version = "4.0.0" }
 reqwest = { version = "0.12.4", features = ["blocking", "rustls-tls"], optional = true }

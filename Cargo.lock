@@ -513,7 +513,7 @@ checksum = "6c8640c5d730cb13ebd907d8d04b52f55ac9a2eec55b440c8892f40d56c76c1d"
 
 [[package]]
 name = "metre"
-version = "0.2.1"
+version = "0.2.2"
 dependencies = [
  "json_comments",
  "metre-macros",
@@ -528,7 +528,7 @@ dependencies = [
 
 [[package]]
 name = "metre-macros"
-version = "0.2.1"
+version = "0.2.2"
 dependencies = [
  "Inflector",
  "darling",
