@@ -1,0 +1,36 @@
+name: publish
+
+on: 
+  workflow_dispatch:
+  
+  push: 
+    tags:
+      - "v*.*.*"
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - uses: actions/checkout@v3
+
+    - name: Install stable toolchain
+      uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+        override: true    
+
+    - name: Publish metre-macros
+      working-directory: ./metre-macros
+      run: cargo publish --token ${{ secrets.CRATES_TOKEN }}
+
+    - name: Publish metre
+      working-directory: ./metre
+      run: cargo publish --token ${{ secrets.CRATES_TOKEN }}
+
