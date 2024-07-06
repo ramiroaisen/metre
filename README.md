@@ -25,9 +25,9 @@ struct MyConfig {
 
 let mut loader = ConfigLoader::<MyConfig>::new();
 
+loader.defaults()?;
 loader.file("config.json", Format::Json)?;
 loader.env()?;
-loader.defaults()?;
 
 // config have the type MyConfig here
 let config = loader.finish()?;  
