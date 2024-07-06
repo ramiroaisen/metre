@@ -5,6 +5,30 @@ use metre::PartialConfig;
 use std::collections::HashMap;
 
 #[test]
+#[ignore]
+#[allow(unused)]
+fn readme_example() -> Result<(), Box<dyn std::error::Error>> {
+  use metre::{Config, ConfigLoader};
+
+  #[derive(Config)]
+  struct MyConfig {
+    foo: u16,
+    bar: String,
+  }
+
+  let mut loader = ConfigLoader::<MyConfig>::new();
+  
+  loader.file("config.json", metre::Format::Json)?;
+  loader.env()?;
+  loader.defaults()?;
+  
+  // config have the type MyConfig here, or loader.finish() returns an error
+  let config = loader.finish()?;  
+
+  Ok(())
+}
+
+#[test]
 fn test() {
   #[derive(Config, Debug, Eq, PartialEq)]
   struct Conf {

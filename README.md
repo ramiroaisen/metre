@@ -7,7 +7,28 @@
 [![docs](https://github.com/ramiroaisen/metre/actions/workflows/docs.yml/badge.svg)](https://github.com/ramiroaisen/metre/actions/workflows/docs.yml)
 
 
+
 ## What is it?
+
+### Usage
+```rust
+  #[derive(Config)]
+  struct MyConfig {
+    foo: u16,
+    bar: String,
+  }
+
+  let mut loader = ConfigLoader::<MyConfig>::new();
+  
+  loader.file("config.json", metre::Format::Json)?;
+  loader.env()?;
+  loader.defaults()?;
+  
+  // config have the type MyConfig here
+  let config = loader.finish()?;  
+
+```
+
 
 **metre** is a configuration loader for Rust that allows you to load configurations from a variety of formats such as **toml**, **json**, **jsonc** and **yaml**
 

@@ -1,0 +1,148 @@
+//! use metre::Config;
+//! use metre::ConfigLoader;
+//!
+//! #[derive(Config)]
+//! #[config(rename_all = "snake_case")]
+//! struct MyConfig {
+//!   
+//!   // a simple property
+//!   port: u16,
+//!   
+//!   // a property with a default value
+//!   #[config(default = std::net::SocketAddr::from(([0,0,0,0], 3000)))]
+//!   addr: std::net::SocketAddr,
+//!
+//!   // some type that doesn't implement FromStr and with a custom merge function
+//!   #[config(parse_env = parse_vec, merge = merge_vec)]
+//!   custom_parse_env: Vec<String>,
+//!
+//!   // an optional value
+//!   // you should only use Option for configurations that are really optional
+//!   // under the hood metre creates a Config::Partial type that is a deep-partial version
+//!   // of this struct, so it can be deserialized from partial configurations
+//!   optional: Option<String>,   
+//!   
+//!   // a nested configuration
+//!   // the nested type must also implement Config
+//!   #[config(nested)]
+//!   nested: NestedConfig,
+//!
+//!   // rename env variable
+//!   // the default name for env variables is "{}{name}"
+//!   // where name is the SCREAMING_SNAKE_CASE version of the
+//!   // field name after applying rename and rename_all configurations
+//!   // and the {} placeholder is filled with the auto calculated prefix
+//!   #[config(env = "{}OTHER_NAME")]
+//!   name: String,
+//!
+//!   // fixed env key (ignores prefixes)
+//!   // this will ignore auto calculated prefixes and prefixes set by env_with_prefix loader calls
+//!   #[config(env = "FIXED_ENV_KEY")]
+//!   fixed_env_key: u64,
+//!
+//!   // skip env parsing for this variable
+//!   #[config(skip_env)]
+//!   skip_env: String
+//! }
+//!
+//! #[derive(Config)]
+//! // change the env prefix for this struct
+//! #[config(env_prefix = "{}OTHER_")]
+//! struct NestedConfig {
+//!  #[config(rename = "other_deserialize_and_env_name")]
+//!  deep_prop: String
+//! }
+//!
+//! fn load_config() -> Result<MyConfig, metre::Error> {
+//!   use metre::Format;
+//!   
+//!   // create an empty configuration object
+//!   let mut loader = ConfigLoader::<MyConfig>::new();
+//!
+//!   // partial configurations can be added in stages to form the final configuration
+//!   // each new stage will override the previous one for the present keys
+//!   // you can control how the merge is done with the `#[config(merge = function_name)]` attribute
+//!
+//!   // add deep-partial defaults calculated from the `#[config(default = value)]` attributes
+//!   loader.defaults()?;
+//!   
+//!   // add deep-partial values from config file
+//!   #[cfg(feature = "json")]
+//!   loader.file("./config.json", Format::Json)?;
+//!
+//!   // the same as above but will do nothing if the file doesn't exist
+//!   // Jsonc format is json with comments
+//!   #[cfg(feature = "jsonc")]
+//!   loader.file_optional("./config.jsonc", Format::Jsonc)?;
+//!   
+//!   // from memory
+//!   loader.code("port=3000", Format::Toml)?;
+//!
+//!   // form a url
+//!   #[cfg(feature = "url")]
+//!   loader.url("https://example.com/config.yaml", Format::Yaml)?;
+//!
+//!   // from a url but async
+//!   #[cfg(feature = "url-async")]
+//!   async {
+//!     loader.url_async("https://example.com/config.json", Format::Json).await.expect("error loading config from url");
+//!   };
+//!
+//!   // from env variables
+//!   #[cfg(feature = "env")]
+//!   loader.env()?;
+//!
+//!   // from env variables with a prefix
+//!   #[cfg(feature = "env")]
+//!   loader.env_with_prefix("MY_APP_")?;
+//!
+//!   // from env variables with a custom provider
+//!   // env provider must implement the metre::EnvProvider trait
+//!   // that is already implemented for several types of Maps
+//!   
+//!   #[cfg(feature = "env")]
+//!   {
+//!     let mut env_provider = std::collections::HashMap::from([( "MY_APP_PORT", "3000" )]);
+//!     loader.env_with_provider_and_prefix(&env_provider, "MY_APP_")?;
+//!   }
+//!   // from a pre generated partial configuration
+//!   // PartialMyConfig type is auto generated from the `#[derive(Config)]` macro
+//!   // and equals to <MyConfig as Config>::Partial: PartialConfig
+//!   // see the PartialConfig trait too see methods asociated with partial config structs
+//!   let partial = PartialMyConfig { port: Some(3000), ..Default::default()  };
+//!   loader.partial(partial)?;
+//!
+//!   // compute the final values from the sum of partial configurations
+//!   // if after all the stages, required properties are still missing
+//!   // a pretty error indicating the missing bits will be returned
+//!   let config = loader.finish()?;
+//!
+//!   // here config has the type `MyConfig`
+//!   assert_eq!(config.port, 3000);
+//!
+//!   Ok(config)
+//! }
+//!
+//!
+//! // this is only needed to parse env for types that does not implement FromStr
+//! // you can return any error here that implements Display
+//! fn parse_vec(value: &str) -> Result<Option<Vec<String>>, std::convert::Infallible> {
+//!   let vec = value.split(",").map(String::from).collect();
+//!   Ok(Some(vec))
+//! }
+//!
+//! // custom merge function that merges two lists
+//! // the new stage will append entries to the previous stage
+//! // instead of replace it entirely
+//! // you can return any error here that implements Display
+//! fn merge_vec(left: &mut Option<Vec<String>>, right: Option<Vec<String>>) -> Result<(), std::convert::Infallible> {
+//!   if let Some(left) = left.as_mut() {
+//!     if let Some(mut right) = right {
+//!       left.append(&mut right);
+//!     }
+//!   } else {
+//!     *left = right
+//!   }
+//!
+//!   Ok(())
+//! }
