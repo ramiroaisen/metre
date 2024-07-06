@@ -8,7 +8,7 @@ documentation = "https://docs.rs/metre"
 license = "Apache-2.0"
 readme = "../README.md"
 keywords = ["configuration", "config", "loader", "env"] 
-categories = ["config", "environment-variables"]
+categories = ["config"]
 authors = ["Ramiro Aisen <ramiroaisen@gmail.com>"]
 
 [features]
