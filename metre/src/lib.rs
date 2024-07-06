@@ -29,22 +29,27 @@
 //! 
 //! To see all macro attributes available see the [Config](macro@Config) derive macro documentation.
 //! 
-//! ```no_run
-//! use metre::{Config, ConfigLoader};
+//! ```
+//! # fn load_config() -> Result<(), Box<dyn std::error::Error>> {
+//! use metre::{Config, ConfigLoader, Format};
 //! 
+//! #[derive(Config)]
 //! struct MyConfig {
 //!   foo: u16,
 //!   bar: String,
 //! }
 //! 
-//! let loader = ConfigLoader::<MyConfig>::new();
+//! let mut loader = ConfigLoader::<MyConfig>::new();
 //!
-//! loader.file("config.json", metre::Format::Json)?;
+//! loader.file("config.json", Format::Json)?;
 //! loader.env()?;
 //! loader.defaults()?;
 //!
 //! // config have the type MyConfig here, or loader.finish() returns an error
 //! let config = loader.finish()?;
+//! 
+//! # Ok(())
+//! # }
 //! ``` 
 
 use owo_colors::*;

@@ -9,34 +9,34 @@
 
 
 ## What is it?
-
-### Usage
-```rust
-  #[derive(Config)]
-  struct MyConfig {
-    foo: u16,
-    bar: String,
-  }
-
-  let mut loader = ConfigLoader::<MyConfig>::new();
-  
-  loader.file("config.json", metre::Format::Json)?;
-  loader.env()?;
-  loader.defaults()?;
-  
-  // config have the type MyConfig here
-  let config = loader.finish()?;  
-
-```
-
-
 **metre** is a configuration loader for Rust that allows you to load configurations from a variety of formats such as **toml**, **json**, **jsonc** and **yaml**
 
 It also supports a variety of sources such as **program defaults**, **env variables**, **files**, and **urls**.   
 
+## Usage
+```rust
+use metre::{Config, ConfigLoader, Format};
+
+#[derive(Config)]
+struct MyConfig {
+  foo: u16,
+  bar: String,
+}
+
+let mut loader = ConfigLoader::<MyConfig>::new();
+
+loader.file("config.json", Format::Json)?;
+loader.env()?;
+loader.defaults()?;
+
+// config have the type MyConfig here
+let config = loader.finish()?;  
+```
+
 ## Focus
 
 **metre** focus is to provide a **declarative** and **type-safe** way to load configurations in Rust.
+
 
 ## How?
 

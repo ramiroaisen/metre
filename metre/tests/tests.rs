@@ -8,7 +8,7 @@ use std::collections::HashMap;
 #[ignore]
 #[allow(unused)]
 fn readme_example() -> Result<(), Box<dyn std::error::Error>> {
-  use metre::{Config, ConfigLoader};
+  use metre::{Config, ConfigLoader, Format};
 
   #[derive(Config)]
   struct MyConfig {
@@ -18,7 +18,7 @@ fn readme_example() -> Result<(), Box<dyn std::error::Error>> {
 
   let mut loader = ConfigLoader::<MyConfig>::new();
   
-  loader.file("config.json", metre::Format::Json)?;
+  loader.file("config.json", Format::Json)?;
   loader.env()?;
   loader.defaults()?;
   
