@@ -19,8 +19,9 @@ use metre::{Config, ConfigLoader, Format};
 
 #[derive(Config)]
 struct MyConfig {
-  foo: u16,
-  bar: String,
+  #[config(default = 8000)]
+  port: u16,
+  foo: String
 }
 
 let mut loader = ConfigLoader::<MyConfig>::new();

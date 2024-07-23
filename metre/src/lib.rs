@@ -35,8 +35,9 @@
 //! 
 //! #[derive(Config)]
 //! struct MyConfig {
-//!   foo: u16,
-//!   bar: String,
+//!   #[config(default = 3000)]
+//!   port: u16,
+//!   foo: String,
 //! }
 //! 
 //! let mut loader = ConfigLoader::<MyConfig>::new();
