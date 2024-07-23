@@ -1,3 +1,6 @@
+#![allow(clippy::manual_unwrap_or_default)]
+// darling macro warns without this
+
 use darling::util::SpannedValue;
 use darling::FromAttributes;
 use inflector::Inflector;
