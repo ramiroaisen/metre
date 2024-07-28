@@ -506,8 +506,14 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "90ed8c1e510134f979dbc4f070f87d4313098b704861a105fe34231c70a3901c"
 
 [[package]]
-name = "me0e"
-version = "0.2.5"
+name = "memchr"
+version = "2.7.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6c8640c5d730cb13ebd907d8d04b52f55ac9a2eec55b440c8892f40d56c76c1d"
+
+[[package]]
+name = "metre"
+version = "0.2.6"
 dependencies = [
  "json_comments",
  "metre-macros",
@@ -521,14 +527,8 @@ dependencies = [
 ]
 
 [[package]]
-name = "memchr"
-version = "2.7.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6c8640c5d730cb13ebd907d8d04b52f55ac9a2eec55b440c8892f40d56c76c1d"
-
-[[package]]
 name = "metre-macros"
-version = "0.2.5"
+version = "0.2.6"
 dependencies = [
  "Inflector",
  "darling",

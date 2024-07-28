@@ -29,6 +29,14 @@ jobs:
         toolchain: stable
         override: true    
 
+    - name: Test
+      working-directory: ./metre
+      run: cargo test --all-features
+    
+    - name: Build
+      working-directory: ./metre
+      run: cargo build --all-features
+
     - name: Publish metre-macros
       working-directory: ./metre-macros
       run: cargo publish --token ${{ secrets.CRATES_TOKEN }}
