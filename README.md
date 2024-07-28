@@ -1,6 +1,7 @@
 # **metre**: The rust configuration loader
 ### AKA:  `#[derive(Config)]`
 
+[![crates.io](https://img.shields.io/crates/v/metre.svg)](https://crates.io/crates/metre)
 [![build](https://github.com/ramiroaisen/metre/actions/workflows/build.yml/badge.svg)](https://github.com/ramiroaisen/metre/actions/workflows/build.yml)
 [![unit-tests](https://github.com/ramiroaisen/metre/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/ramiroaisen/metre/actions/workflows/unit-tests.yml)
 [![integration-tests](https://github.com/ramiroaisen/metre/actions/workflows/integration-tests.yml/badge.svg)](https://github.com/ramiroaisen/metre/actions/workflows/integration-tests.yml)

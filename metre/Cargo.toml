@@ -1,5 +1,5 @@
 [package]
-name = "me0e"
+name = "metre"
 version = "0.2.5"
 edition = "2021"
 description = "Metre, the configuration loader for Rust"
